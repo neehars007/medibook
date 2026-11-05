@@ -1,0 +1,68 @@
+# Local stack: API + PostgreSQL 16 + Redis + MinIO (private documents) + MailHog (catch-all SMTP).
+#   docker compose up -d postgres redis minio mailhog   # infra only, run the API from your IDE
+#   docker compose up --build                          # everything
+# MailHog UI: http://localhost:8025   MinIO console: http://localhost:9001   API docs: http://localhost:8080/swagger-ui.html
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: medibook
+      POSTGRES_USER: medibook
+      POSTGRES_PASSWORD: medibook
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medibook"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  minio:
+    # MinIO removed its free images from Docker Hub/Quay in Sept 2026; Chainguard still publishes a build.
+    # Its default user (65532) can't write to a fresh named volume, so run as root locally.
+    image: cgr.dev/chainguard/minio:latest
+    user: "0:0"
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports: ["9000:9000", "9001:9001"]
+    volumes: [miniodata:/data]
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports: ["1025:1025", "8025:8025"]
+
+  api:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      minio:
+        condition: service_started
+      mailhog:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:postgresql://postgres:5432/medibook
+      REDIS_HOST: redis
+      MINIO_ENDPOINT: http://minio:9000
+      SMTP_HOST: mailhog
+      FRONTEND_URL: http://localhost:5173
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+    ports: ["8080:8080"]
+
+  # web:   # React SPA (Vite) - add once the frontend/ folder exists
+  #   build: ./frontend
+  #   ports: ["5173:80"]
+  #   depends_on: [api]
+
+volumes:
+  pgdata:
+  miniodata:

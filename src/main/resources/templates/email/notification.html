@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">MediBook</title>
+</head>
+<body style="margin:0;padding:24px;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;font-size:17px;color:#1a1a1a;">
+<table role="presentation" width="100%" style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:8px;">
+    <tr>
+        <td style="padding:24px 28px;border-bottom:1px solid #e5e7eb;">
+            <strong style="font-size:20px;color:#0f5f8c;">MediBook</strong>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding:28px;">
+            <h1 style="font-size:22px;margin:0 0 16px;" th:text="${title}">Title</h1>
+            <p th:if="${greeting != null}" th:text="${greeting}">Hello,</p>
+            <p th:each="line : ${lines}" th:text="${line}" style="line-height:1.5;">Line</p>
+            <p th:if="${ctaUrl != null}" style="margin:28px 0;">
+                <a th:href="${ctaUrl}" th:text="${ctaLabel}"
+                   style="background:#0f5f8c;color:#ffffff;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:bold;">Open</a>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding:16px 28px;font-size:13px;color:#6b7280;border-top:1px solid #e5e7eb;">
+            For your privacy, medical details are only available in the secure patient portal.<br>
+            This service is not for emergencies. In an emergency, call 911.
+        </td>
+    </tr>
+</table>
+</body>
+</html>
