@@ -51,7 +51,7 @@ export function DoctorList() {
               <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
                 <dt className="text-ink-soft">Experience</dt><dd>{d.experienceYears} years</dd>
                 <dt className="text-ink-soft">Speaks</dt><dd>{d.languages.join(', ') || 'English'}</dd>
-                <dt className="text-ink-soft">OP fee</dt><dd>{money(d.consultationFee)}</dd>
+                <dt className="text-ink-soft">visit fee</dt><dd>{money(d.consultationFee)}</dd>
                 <dt className="text-ink-soft">Rating</dt><dd>{d.rating ? `${d.rating.toFixed(1)} of 5 (${d.reviewCount})` : 'No reviews yet'}</dd>
                 <dt className="text-ink-soft">Next availability</dt><dd className="font-bold">{d.nextAvailableSlot ? dateTime(d.nextAvailableSlot, tz) : 'None this week'}</dd>
               </dl>
