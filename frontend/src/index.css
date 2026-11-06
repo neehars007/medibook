@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { font-size: 100%; }
+  body { @apply bg-paper text-ink font-sans text-base antialiased; }
+  h1 { @apply text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight; }
+  h2 { @apply text-2xl font-bold leading-snug; }
+  h3 { @apply text-xl font-bold; }
+  a { @apply text-teal underline underline-offset-4 decoration-2; }
+  :focus-visible { @apply outline outline-[3px] outline-offset-2 outline-teal; }
+  ::selection { @apply bg-card-tint; }
+}
+
+@layer components {
+  /* Tear-off ticket used for time slots and the confirmation card */
+  .ticket {
+    @apply relative bg-surface border-2 border-line rounded-md;
+    --notch: 9px;
+    -webkit-mask: radial-gradient(circle var(--notch) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+                  radial-gradient(circle var(--notch) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+            mask: radial-gradient(circle var(--notch) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+                  radial-gradient(circle var(--notch) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+  }
+  .ticket-selected { @apply bg-card border-ink; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
