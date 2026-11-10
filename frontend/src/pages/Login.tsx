@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth, homeFor } from '../lib/auth'
 import { ApiError, post } from '../lib/api'
 import { Alert, Button, Field, Input } from '../components/ui'
+import AuthCard from '../components/AuthCard'
 
 const schema = z.object({
   email: z.string().email('Enter a valid email address'),
@@ -43,8 +44,7 @@ export default function Login() {
   }
 
   return (
-    <div className="max-w-md space-y-6">
-      <h1>Log in</h1>
+    <AuthCard title="Welcome back" sub="Log in to book and manage your visits.">
       {lostReason && <Alert tone="info">{lostReason}</Alert>}
       {error && <Alert>{error}</Alert>}
       {resetSent && <Alert tone="success">If that email has an account, a reset link is on its way.</Alert>}
@@ -60,20 +60,20 @@ export default function Login() {
             <Input id="totp" inputMode="numeric" autoComplete="one-time-code" maxLength={6} {...register('totpCode')} />
           </Field>
         )}
-        <div className="flex flex-wrap items-center gap-4">
-          <Button type="submit" busy={isSubmitting}>Log in</Button>
-          <button type="button" onClick={forgot} className="text-teal underline underline-offset-4 font-bold">Forgot password</button>
+        <div className="flex justify-end -mt-2">
+          <button type="button" onClick={forgot} className="text-sm font-semibold text-brand hover:text-brand-dark">Forgot password?</button>
         </div>
+        <Button type="submit" size="lg" className="w-full" busy={isSubmitting}>Log in</Button>
       </form>
-      <p>New patient? <Link to="/register">Create an account</Link></p>
-      <details className="rounded-md border-2 border-line bg-surface px-4 py-3">
-        <summary className="cursor-pointer font-bold">Demo logins</summary>
-        <p className="mt-2 text-ink-soft">Password for all: <code>Demo@12345</code></p>
-        <ul className="mt-1 list-disc pl-6 text-ink-soft">
+      <p className="text-center text-sm text-ink-soft">New patient? <Link to="/register">Create an account</Link></p>
+      <details className="rounded-xl border border-line bg-canvas px-4 py-3 text-sm">
+        <summary className="cursor-pointer font-semibold">Demo logins</summary>
+        <p className="mt-2 text-ink-soft">Password for all: <code className="font-semibold text-ink">Demo@12345</code></p>
+        <ul className="mt-1 space-y-0.5 text-ink-soft">
           <li>patient@medibook.test</li><li>reception@medibook.test</li>
           <li>doctor@medibook.test</li><li>admin@medibook.test</li>
         </ul>
       </details>
-    </div>
+    </AuthCard>
   )
 }

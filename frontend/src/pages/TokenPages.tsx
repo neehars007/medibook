@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { ApiError, post, tokenStore } from '../lib/api'
-import { Alert, Button, Field, Input, Spinner } from '../components/ui'
+import { Alert, Button, Field, Input, Spinner, buttonClass } from '../components/ui'
+import AuthCard from '../components/AuthCard'
 import type { AuthResponse } from '../lib/types'
 
 /** Landing pages for the links in verification, reset and invite emails. */
@@ -15,9 +16,11 @@ export function VerifyEmail() {
   }, [params])
   if (state === 'working') return <Spinner label="Confirming your email" />
   return state === 'ok' ? (
-    <div className="max-w-md space-y-4"><h1>Email confirmed</h1><p>Your account is active.</p><Link to="/login">Log in</Link></div>
+    <AuthCard title="Email confirmed" sub="Your account is active.">
+      <Link to="/login" className={buttonClass('primary', 'lg') + ' w-full'}>Log in</Link>
+    </AuthCard>
   ) : (
-    <div className="max-w-md space-y-4"><h1>Link not valid</h1><Alert>{state}</Alert></div>
+    <AuthCard title="Link not valid"><Alert>{state}</Alert></AuthCard>
   )
 }
 
@@ -40,14 +43,15 @@ function PasswordForm({ title, action, endpoint, field }:
     } finally { setBusy(false) }
   }
   return (
-    <form onSubmit={submit} className="max-w-md space-y-5">
-      <h1>{title}</h1>
-      {error && <Alert>{error}</Alert>}
-      <Field label="New password" htmlFor="pw" hint="At least 8 characters">
-        <Input id="pw" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} />
-      </Field>
-      <Button type="submit" busy={busy}>{action}</Button>
-    </form>
+    <AuthCard title={title}>
+      <form onSubmit={submit} className="space-y-4">
+        {error && <Alert>{error}</Alert>}
+        <Field label="New password" htmlFor="pw" hint="At least 8 characters">
+          <Input id="pw" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} />
+        </Field>
+        <Button type="submit" size="lg" className="w-full" busy={busy}>{action}</Button>
+      </form>
+    </AuthCard>
   )
 }
 

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Clock } from 'lucide-react'
 import { useAuth } from '../lib/auth'
 import { refreshSession } from '../lib/api'
 import { Button } from './ui'
@@ -34,16 +35,16 @@ export default function SessionTimeout() {
   const m = Math.floor(remaining / 60)
   const s = String(remaining % 60).padStart(2, '0')
   return (
-    <div role="alertdialog" aria-modal="true" aria-labelledby="to-title"
-      className="fixed inset-0 z-50 grid place-items-center bg-ink/60 p-4">
-      <div className="w-full max-w-md rounded-lg bg-surface p-6 space-y-4 border-2 border-ink">
-        <h2 id="to-title">Are you still there?</h2>
-        <p>For your privacy you'll be logged out in <strong>{m}:{s}</strong>.</p>
-        <div className="flex gap-3">
-          <Button onClick={async () => { await refreshSession(); last.current = Date.now(); setRemaining(null) }}>
-            Stay logged in
-          </Button>
-          <Button variant="secondary" onClick={() => logout().then(() => navigate('/'))}>Log out now</Button>
+    <div role="alertdialog" aria-modal="true" aria-labelledby="to-title" className="fixed inset-0 z-50 grid place-items-center bg-ink/40 backdrop-blur-sm p-4">
+      <div className="card w-full max-w-sm p-6 space-y-4 shadow-lift">
+        <div className="grid h-11 w-11 place-items-center rounded-full bg-amber-soft text-amber"><Clock className="h-5 w-5" /></div>
+        <div className="space-y-1">
+          <h2 id="to-title">Still there?</h2>
+          <p className="text-ink-soft">For your privacy you'll be logged out in <strong className="text-ink tabular-nums">{m}:{s}</strong>.</p>
+        </div>
+        <div className="flex gap-2">
+          <Button className="flex-1" onClick={async () => { await refreshSession(); last.current = Date.now(); setRemaining(null) }}>Stay logged in</Button>
+          <Button variant="secondary" onClick={() => logout().then(() => navigate('/'))}>Log out</Button>
         </div>
       </div>
     </div>
