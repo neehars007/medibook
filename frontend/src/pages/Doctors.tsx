@@ -78,10 +78,19 @@ export function DoctorList() {
                   </div>
                 </div>
               </div>
+<<<<<<< HEAD
 
               <dl className="grid grid-cols-2 gap-3 text-sm">
                 <div className="flex items-center gap-2"><Award className="h-4 w-4 text-ink-faint" aria-hidden /><dt className="sr-only">Experience</dt><dd>{d.experienceYears} years experience</dd></div>
                 <div className="flex items-center gap-2"><Languages className="h-4 w-4 text-ink-faint" aria-hidden /><dt className="sr-only">Speaks</dt><dd className="truncate">{d.languages.join(', ') || 'English'}</dd></div>
+=======
+              <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
+                <dt className="text-ink-soft">Experience</dt><dd>{d.experienceYears} years</dd>
+                <dt className="text-ink-soft">Speaks</dt><dd>{d.languages.join(', ') || 'English'}</dd>
+                <dt className="text-ink-soft">Visit fee</dt><dd>{money(d.consultationFee)}</dd>
+                <dt className="text-ink-soft">Rating</dt><dd>{d.rating ? `${d.rating.toFixed(1)} of 5 (${d.reviewCount})` : 'No reviews yet'}</dd>
+                <dt className="text-ink-soft">Next availability</dt><dd className="font-bold">{d.nextAvailableSlot ? dateTime(d.nextAvailableSlot, tz) : 'None this week'}</dd>
+>>>>>>> d699e7362f724185e29cf2290bfed6d6043c84bc
               </dl>
 
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-canvas px-4 py-3">
