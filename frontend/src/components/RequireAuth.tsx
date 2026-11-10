@@ -11,9 +11,9 @@ export default function RequireAuth({ roles, children }: { roles?: Role[]; child
   if (!user) return <Navigate to={`/login?next=${encodeURIComponent(loc.pathname + loc.search)}`} replace />
   if (roles && !roles.includes(user.role)) {
     return (
-      <div className="space-y-2">
-        <h1>Not available for your account</h1>
-        <p>This page is for {roles.map((r) => r.toLowerCase()).join(' or ')} accounts.</p>
+      <div className="card mx-auto max-w-md p-8 text-center space-y-2">
+        <h1 className="text-2xl">Not available for your account</h1>
+        <p className="text-ink-soft">This page is for {roles.map((r) => r.toLowerCase()).join(' or ')} accounts.</p>
       </div>
     )
   }

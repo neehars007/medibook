@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ApiError, post } from '../lib/api'
 import { Alert, Button, Field, Input, Select } from '../components/ui'
+import AuthCard from '../components/AuthCard'
 
 const schema = z.object({
   fullName: z.string().min(2, 'Enter your full name'),
@@ -35,19 +36,16 @@ export default function Register() {
 
   if (done) {
     return (
-      <div className="max-w-md space-y-4">
-        <h1>Check your email</h1>
-        <p>We sent a confirmation link to <strong>{done}</strong>. Open it to activate your account, then log in.</p>
-        <p className="text-ink-soft">Running locally? The email is in MailHog at <a href="http://localhost:8025">localhost:8025</a>.</p>
-      </div>
+      <AuthCard title="Check your email" sub={`We sent a confirmation link to ${done}. Open it to activate your account, then log in.`}>
+        <p className="text-sm text-ink-soft">Running locally? The email is in MailHog at <a href="http://localhost:8025">localhost:8025</a>.</p>
+      </AuthCard>
     )
   }
 
   return (
-    <div className="max-w-md space-y-6">
-      <h1>Create your account</h1>
+    <AuthCard title="Create your account" sub="Book visits for yourself and your family.">
       {error && <Alert>{error}</Alert>}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <Field label="Full name" htmlFor="fullName" error={errors.fullName?.message}>
           <Input id="fullName" autoComplete="name" {...register('fullName')} />
         </Field>
@@ -71,9 +69,9 @@ export default function Register() {
         <Field label="Password" htmlFor="password" hint="At least 8 characters" error={errors.password?.message}>
           <Input id="password" type="password" autoComplete="new-password" {...register('password')} />
         </Field>
-        <Button type="submit" busy={isSubmitting}>Create account</Button>
+        <Button type="submit" size="lg" className="w-full" busy={isSubmitting}>Create account</Button>
       </form>
-      <p>Already registered? <Link to="/login">Log in</Link></p>
-    </div>
+      <p className="text-center text-sm text-ink-soft">Already registered? <Link to="/login">Log in</Link></p>
+    </AuthCard>
   )
 }

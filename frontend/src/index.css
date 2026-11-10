@@ -2,28 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+  --page: 7 10 19;          /* #070A13 */
+  --surface: 13 18 33;      /* #0D1221 cards */
+  --inset: 19 26 46;        /* #131A2E */
+  --ink: 232 236 246;
+  --ink-soft: 155 166 191;
+  --ink-faint: 102 114 140;
+  --line: 30 39 66;
+  --line-strong: 44 55 90;
+  --brand: 139 147 255;     /* #8B93FF links, icons */
+  --brand-hi: 180 186 255;
+  --brand-soft: 25 30 64;
+  --brand-ring: 99 102 241;
+  --cyan: 34 211 238;
+  --cyan-soft: 11 42 52;
+  --amber: 251 191 36;
+  --amber-soft: 42 34 14;
+  --danger: 251 113 133;
+  --danger-soft: 45 17 25;
+  --success: 52 211 153;
+  --success-soft: 12 42 33;
+}
+
 @layer base {
-  html { font-size: 100%; }
-  body { @apply bg-paper text-ink font-sans text-base antialiased; }
-  h1 { @apply text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight; }
-  h2 { @apply text-2xl font-bold leading-snug; }
-  h3 { @apply text-xl font-bold; }
-  a { @apply text-teal underline underline-offset-4 decoration-2; }
-  :focus-visible { @apply outline outline-[3px] outline-offset-2 outline-teal; }
-  ::selection { @apply bg-card-tint; }
+  body {
+    @apply text-ink font-sans text-[15.5px] leading-relaxed antialiased;
+    background-color: rgb(var(--page));
+  }
+  h1 { @apply text-3xl sm:text-[2.6rem] font-bold tracking-[-0.03em] leading-[1.1]; }
+  h2 { @apply text-xl font-semibold tracking-[-0.015em]; }
+  h3 { @apply text-base font-semibold; }
+  a { @apply text-brand font-medium hover:text-brand-dark transition-colors; }
+  :focus-visible { @apply outline-none ring-2 ring-brand-ring ring-offset-2 ring-offset-[rgb(var(--page))]; }
+  ::selection { background: rgba(99, 102, 241, 0.45); }
+  option { background: rgb(var(--surface)); color: rgb(var(--ink)); }
 }
 
 @layer components {
-  /* Tear-off ticket used for time slots and the confirmation card */
-  .ticket {
-    @apply relative bg-surface border-2 border-line rounded-md;
-    --notch: 9px;
-    -webkit-mask: radial-gradient(circle var(--notch) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
-                  radial-gradient(circle var(--notch) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
-            mask: radial-gradient(circle var(--notch) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
-                  radial-gradient(circle var(--notch) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+  .card {
+    @apply rounded-2xl border border-line bg-surface/70 shadow-card backdrop-blur-xl;
   }
-  .ticket-selected { @apply bg-card border-ink; }
+  .card-hover { @apply transition-all duration-200 hover:border-line-strong hover:-translate-y-0.5 hover:shadow-lift; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold; }
+  .label { @apply text-sm text-ink-faint; }
+  .bg-grad { background-image: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); }
+  .text-grad {
+    background-image: linear-gradient(180deg, #FFFFFF 20%, #A5ACCB 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .text-grad-accent {
+    background-image: linear-gradient(90deg, #22D3EE, #8B93FF 55%, #C084FC);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  /* Faint grid used behind the hero */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
