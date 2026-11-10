@@ -20,7 +20,7 @@ import SpecialtyIcon from '../components/SpecialtyIcon'
  * Booking wizard. Choices that survive a login redirect (specialty, doctor, type, patient) live in
  * the URL; the slot hold and the form are kept in memory.
  */
-const STEPS = ['Doctor', 'Visit type', 'Patient', 'Date & time', 'Details', 'Done'] as const
+const STEPS = ['Doctor', 'Visit type', 'Patient', 'Date-time', 'Details', 'Done'] as const
 const ANY = 'any'
 
 export default function Book() {
